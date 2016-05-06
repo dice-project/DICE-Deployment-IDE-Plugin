@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DICE Deployments
+Bundle-SymbolicName: org.dice.deployments;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Activator: org.dice.deployments.DeploymentsActivator
+Bundle-Vendor: DICE Project
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.dice.ui;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
