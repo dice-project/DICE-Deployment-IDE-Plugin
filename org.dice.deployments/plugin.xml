@@ -3,18 +3,25 @@
 <plugin>
 
    <extension
-         point="org.eclipse.ui.views">
-      <category
-            name="DICE"
-            id="org.dice.deployments">
-      </category>
-      <view
-            name="Deployments View"
-            icon="icons/sample.gif"
-            category="org.dice.deployments"
-            class="org.dice.deployments.views.DeploymentsView"
-            id="org.dice.deployments.views.DeploymentsView">
-      </view>
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.dice.menu.tools">
+         <command
+               commandId="org.dice.ui.deploymentsShowWebUI"
+               icon="icons/deployments.png"
+               label="DICE Deployments Tool UI"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.dice.deployments.handlers.DeploymentsHandler"
+            id="org.dice.ui.deploymentsShowWebUI"
+            name="DICE Deployment Service UI">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
@@ -24,27 +31,6 @@
             id="org.dice.ui.preferences.deployments"
             name="Deployment Tools">
       </page>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="org.dice.deployments.handlers.DeploymentsUI"
-            description="Opens DICE Deployment Service UI"
-            id="org.dice.ui.deploymentsShowWebUI"
-            name="DICE Deployment Service UI">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:org.dice.menu.tools">
-         <command
-               commandId="org.dice.ui.deploymentsShowWebUI"
-               label="DICE Deployments Tool UI"
-               style="push">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

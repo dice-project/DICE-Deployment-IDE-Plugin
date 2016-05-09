@@ -3,5 +3,5 @@
    <description name="DICE Deployment IDE plugin">
       DICE Deployment IDE plugin
    </description>
-   <feature url="features/org.dice.features.deployments_0.1.0.jar" id="org.dice.features.deployments" version="0.1.0"/>
+   <feature url="features/org.dice.features.deployments_1.0.0.qualifier.jar" id="org.dice.features.deployments" version="1.0.0.qualifier"/>
 </site>

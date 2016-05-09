@@ -1,59 +1,58 @@
 package org.dice.deployments.preferences.pages;
 
 import org.dice.deployments.DeploymentsActivator;
-import org.eclipse.jface.preference.ComboFieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.dice.ui.preferences.pages.AbstractOpenBrowserPreferencesPage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class DeploymentsPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class DeploymentsPreferencesPage extends AbstractOpenBrowserPreferencesPage {
 
-	private static final String TITLE = "Deployment Tool";
-	private static final String DESCRIPTION = "Preferences for Deployment Tool";
+	private static DeploymentsPreferencesPage singleton;
 
-	public static final String PROTOCOL = "protocol";
-	public static final String SERVER = "server";
-	public static final String PORT = "port";
-
-
-	public DeploymentsPreferencesPage() {
-		this(GRID);
-	}
-	
-	public DeploymentsPreferencesPage(int style) {
-		this(TITLE, style);
-	}
-
-	public DeploymentsPreferencesPage(String title, int style) {
-		super(title, null, style);
-	}
-
-	public DeploymentsPreferencesPage(String title, ImageDescriptor image, int style) {
-		super(title, image, style);
+	public static DeploymentsPreferencesPage getSingleton() {
+		if (singleton == null) {
+			singleton = new DeploymentsPreferencesPage();
+		}
+		return singleton;
 	}
 
 	@Override
-	public void init(IWorkbench workbench) {
-		setPreferenceStore(DeploymentsActivator.getDefault().getPreferenceStore());
-		setDescription(DESCRIPTION);
+	public IPreferenceStore getPluginPreferenceStore() {
+		return DeploymentsActivator.getDefault().getPreferenceStore();
 	}
 
 	@Override
-	protected void createFieldEditors() {
-		addField(new ComboFieldEditor(PROTOCOL, "Protocol",
-				new String[][] { { "http", "http" }, { "https", "https" } }, getFieldEditorParent()));
-		addField(new StringFieldEditor(SERVER, "Server", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PORT, "Port", getFieldEditorParent(), 5));
+	protected String getPageDescription() {
+		return "Preferences for Deployment Tool";
 	}
 
-	public static void initDefaults(IPreferenceStore store) {
-		store.setDefault(PROTOCOL, "http");
-		store.setDefault(SERVER, "localhost");
-		store.setDefault(PORT, 7080);
+	@Override
+	public String getProtocolIdProperty() {
+		return "deployments_protocol";
+	}
+
+	@Override
+	public String getServerIdProperty() {
+		return "deployments_server";
+	}
+
+	@Override
+	public String getPortIdProperty() {
+		return "deployments_port";
+	}
+
+	@Override
+	protected String getDefaultProtocol() {
+		return PROTOCOL.HTTP.name();
+	}
+
+	@Override
+	protected String getDefaultServer() {
+		return "localhost";
+	}
+
+	@Override
+	protected int getDefaultPort() {
+		return 7080;
 	}
 
 }
