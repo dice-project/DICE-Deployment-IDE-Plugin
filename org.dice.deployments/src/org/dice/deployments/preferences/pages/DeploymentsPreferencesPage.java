@@ -47,12 +47,12 @@ public class DeploymentsPreferencesPage extends AbstractOpenBrowserPreferencesPa
 
 	@Override
 	protected String getDefaultServer() {
-		return "localhost";
+		return "109.231.122.46";
 	}
 
 	@Override
 	protected int getDefaultPort() {
-		return 7080;
+		return 8000;
 	}
 
 }
