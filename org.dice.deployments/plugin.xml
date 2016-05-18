@@ -6,13 +6,17 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="menu:org.dice.menu.tools">
-         <command
-               commandId="org.dice.ui.deploymentsShowWebUI"
-               icon="icons/deployments.png"
-               label="DICE Deployments Tool UI"
-               style="push">
-         </command>
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.dice.deployments.menu"
+               label="Deployment Service">
+            <command
+                  commandId="org.dice.ui.deploymentsShowWebUI"
+                  icon="icons/deployments.png"
+                  label="DICE Deployments Tool UI"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension
@@ -26,9 +30,9 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.dice.ui.preferences"
+            category="org.dice.ui.deployments"
             class="org.dice.deployments.preferences.pages.DeploymentsPreferencesPage"
-            id="org.dice.ui.preferences.deployments"
+            id="org.dice.ui.deployments.preferences"
             name="Deployment Tools">
       </page>
    </extension>
