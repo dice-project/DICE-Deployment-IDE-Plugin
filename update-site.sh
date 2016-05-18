@@ -16,11 +16,13 @@ THINGS_TO_MOVE=(
 for thing in ${THINGS_TO_COPY[@]}
 do
   echo "Copying $thing ..."
+  rm -rf $TARGET/$thing
   cp -rf $SOURCE/$thing $TARGET
 done
 
 for thing in ${THINGS_TO_MOVE[@]}
 do
   echo "Moving $thing ..."
-  mv -f $SOURCE/$thing $TARGET
+  rm -rf $TARGET/$thing
+  mv $SOURCE/$thing $TARGET
 done
