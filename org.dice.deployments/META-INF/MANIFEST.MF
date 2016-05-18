@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DICE Deployments
 Bundle-SymbolicName: org.dice.deployments;singleton:=true
-Bundle-Version: 0.1.1
+Bundle-Version: 0.1.2
 Bundle-Activator: org.dice.deployments.DeploymentsActivator
 Bundle-Vendor: DICE Project
 Require-Bundle: org.eclipse.ui,
