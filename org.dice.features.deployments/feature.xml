@@ -2,7 +2,7 @@
 <feature
       id="org.dice.features.deployments"
       label="DICE Deployments Feature"
-      version="1.0.0.qualifier"
+      version="0.1.1"
       provider-name="DICE Project">
 
    <description>

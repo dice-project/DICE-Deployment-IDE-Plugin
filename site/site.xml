@@ -3,7 +3,7 @@
    <description name="DICE Deployment IDE plugin" url="http://dice-project.github.io/DICE-Deployment-IDE-Plugin">
       DICE Deployment IDE plugin
    </description>
-   <feature url="features/org.dice.features.deployments_1.0.0.201605181043.jar" id="org.dice.features.deployments" version="1.0.0.201605181043">
+   <feature url="features/org.dice.features.deployments_0.1.1.jar" id="org.dice.features.deployments" version="0.1.1">
       <category name="org.dice.deployment.category"/>
    </feature>
    <category-def name="org.dice.deployment.category" label="DICE Deployment Tool"/>
