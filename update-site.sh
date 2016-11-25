@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SOURCE=site
-TARGET=gh-pages
+TARGET=gh-pages/updates
 
 THINGS_TO_COPY=(
   site.xml
