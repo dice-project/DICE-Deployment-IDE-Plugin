@@ -4,12 +4,12 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class DeploymentsActivator extends AbstractUIPlugin {
+public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.dice.deployments"; //$NON-NLS-1$
-	private static DeploymentsActivator plugin;
+	private static Activator plugin;
 	
-	public DeploymentsActivator() {
+	public Activator() {
 	}
 
 	public void start(BundleContext context) throws Exception {
@@ -22,7 +22,7 @@ public class DeploymentsActivator extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public static DeploymentsActivator getDefault() {
+	public static Activator getDefault() {
 		return plugin;
 	}
 
