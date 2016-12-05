@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:org.dice.menu.tools">
-         <menu
-               id="org.dice.menu.tools"
-               label="DICE Tools">
-            <command
-                  commandId="org.dice.ui.deploymentsShowWebUI"
-                  icon="icons/deployments.png"
-                  label="DICE Deployments Tool UI"
-                  style="push">
-            </command>
-         </menu>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="org.dice.deployments.handlers.DeploymentsHandler"
-            id="org.dice.ui.deploymentsShowWebUI"
-            name="DICE Deployment Service UI">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
