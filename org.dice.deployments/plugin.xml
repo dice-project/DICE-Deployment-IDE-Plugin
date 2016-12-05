@@ -2,21 +2,21 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.dice.deployments.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
+
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.dice.ui.preferences"
-            class="org.dice.deployments.preferences.pages.DeploymentsPreferencesPage"
-            id="org.dice.ui.preferences.deployments"
+            class="org.dice.deployments.preferences.pages.PreferencesPage"
+            id="org.dice.deployments.preferences.pages.Page"
             name="Deployment Tools">
       </page>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.dice.deployments.preferences.DeploymentsPreferenceInitializer">
-      </initializer>
    </extension>
 
 </plugin>
