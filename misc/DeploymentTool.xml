@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="DICE deployment tool">
+   <intro>
+      <description>
+         This cheat sheet will help you deploy a Data Intensive Application in the test bed.
+      </description>
+   </intro>
+   <item
+         skip="false"
+         title="Set up">
+      <description>
+         First, make sure your deployment service is properly set up, and that your workspace is configured to use a deployment container. 
+      </description>
+      <subitem
+            label="Install the DICE deployment service. Please follow the instructions at https://github.com/dice-project/DICE-Deployment-Service/wiki/Installation.">
+      </subitem>
+      <subitem
+            label="Create a container for your IDE. Please see instructions here: https://github.com/dice-project/DICE-Deployment-Service/wiki/Installation#container-management">
+      </subitem>
+      <subitem
+            label="In the Preferences, select Deployment Tools and fill in the configuration to your DICE deployment service instance.">
+      </subitem>
+   </item>
+   <item
+         title="Open a TOSCA blueprint">
+      <description>
+         Visit the page with the examples: https://github.com/dice-project/DICE-Deployment-Examples and download an example TOSCA blueprint (e.g., storm/storm-openstack.yaml if you are using OpenStack, or storm/storm-fco.yaml if your test bed is on the FCO).
+
+Import the downloaded blueprint into your project.
+      </description>
+   </item>
+   <item
+         title="Open a Deployment Service panel">
+      <description>
+      </description>
+      <subitem
+            label="From the menu Deployment Service select DICE Deployments Tool UI.">
+      </subitem>
+      <subitem
+            label="Log into the DICE deployment service using your username and password.">
+      </subitem>
+   </item>
+   <item
+         title="Deploy your blueprint">
+      <description>
+         Follow these steps to deploy your blueprint.
+      </description>
+      <subitem
+            label="In the DICE - Deployment Service panel, click on the Upload Blueprint.">
+      </subitem>
+      <subitem
+            label="In the file dialog, select your .yaml blueprint file and confirm the selection to close the dialog.">
+      </subitem>
+      <subitem
+            label="Click the Upload button that appears.">
+      </subitem>
+      <subitem
+            label="Wait for the deployment to finish. This may take several minutes or longer. If all goes well, the DICE - Deployment Service will show a &quot;Blueprint successfully deployed&quot; message.">
+      </subitem>
+   </item>
+</cheatsheet>
