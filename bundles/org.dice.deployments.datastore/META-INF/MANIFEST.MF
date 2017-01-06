@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DICE Deployment Service Datastore
+Bundle-SymbolicName: org.dice.deployments.datastore;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Vendor: XLAB
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.dice.deployments.client;bundle-version="0.3.0",
+ org.eclipse.equinox.security;bundle-version="1.2.200",
+ org.eclipse.core.runtime;bundle-version="3.12.0",
+ org.eclipse.core.resources;bundle-version="3.11.0",
+ org.eclipse.jface;bundle-version="3.12.0",
+ org.eclipse.core.databinding.observable;bundle-version="1.6.0",
+ com.google.gson;bundle-version="2.2.4"
+Export-Package: org.dice.deployments.datastore.model
+Bundle-Activator: org.dice.deployments.datastore.Activator

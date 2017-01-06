@@ -18,6 +18,7 @@
 
   <modules>
     <module>org.dice.deployments.client</module>
+    <module>org.dice.deployments.datastore</module>
   </modules>
 
 </project>
