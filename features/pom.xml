@@ -8,18 +8,18 @@
 
   <parent>
     <groupId>org.dice.deployments</groupId>
-    <artifactId>org.dice.deployments.configuration</artifactId>
+    <artifactId>org.dice.deployments.root</artifactId>
     <version>0.3.0-SNAPSHOT</version>
-    <relativePath>./releng/org.dice.deployments.configuration</relativePath>
   </parent>
 
   <groupId>org.dice.deployments</groupId>
-  <artifactId>org.dice.deployments.root</artifactId>
+  <artifactId>org.dice.deployments.features</artifactId>
   <packaging>pom</packaging>
 
   <modules>
-    <module>bundles</module>
-    <module>features</module>
+    <module>org.dice.deployments.client.feature</module>
+    <module>org.dice.deployments.datastore.feature</module>
+    <module>org.dice.deployments.ui.feature</module>
   </modules>
 
 </project>
