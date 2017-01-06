@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.dice.deployments.ui.preferences.pages.MainPage"
+            id="org.dice.deployments.ui.preferences.pages.Main"
+            name="Deployment Tools">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.dice.deployments.ui.launchers.LaunchDeployDelegate"
+            id="org.dice.deployments.ui.launchDeployConfigurationType"
+            modes="run, debug"
+            name="DICE Deploy">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabs">
+      <tab
+            class="org.dice.deployments.ui.launchers.LaunchDeployMainTab"
+            group="org.dice.deployments.ui.launchers.LaunchDeployTabGroup"
+            id="org.dice.deployments.ui.launchers.LaunchDeployMainTab"
+            name="Deployment configuration">
+      </tab>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.dice.deployments.ui.launchers.LaunchDeployTabGroup"
+            id="org.dice.deployments.ui.launchers.LaunchDeployTabGroup"
+            type="org.dice.deployments.ui.launchDeployConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.dice.deployments.ui.launchDeployConfigurationType"
+            icon="icons/deployments.png"
+            id="org.dice.deployments.ui.launchers.LaunchDeployImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.dice.deployments.ui"
+            name="Deployment Service">
+      </category>
+      <view
+            allowMultiple="false"
+            category="org.dice.deployments.ui"
+            class="org.dice.deployments.ui.views.ContainersView"
+            icon="icons/deployments.png"
+            id="org.dice.deployments.ui.views.Containers"
+            name="Container List">
+      </view>
+   </extension>
+
+</plugin>

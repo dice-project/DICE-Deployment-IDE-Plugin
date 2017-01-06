@@ -19,6 +19,7 @@
   <modules>
     <module>org.dice.deployments.client</module>
     <module>org.dice.deployments.datastore</module>
+    <module>org.dice.deployments.ui</module>
   </modules>
 
 </project>
