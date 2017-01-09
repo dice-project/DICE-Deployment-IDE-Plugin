@@ -29,7 +29,7 @@ public class Activator extends Plugin {
     Activator.INSTANCE = this;
     IPath prefsLocation = getStateLocation().append("preferences");
     prefs = SecurePreferencesFactory
-        .open(new URL("file://" + prefsLocation.toString()), null);
+        .open(prefsLocation.toFile().toURI().toURL(), null);
   }
 
   @Override
