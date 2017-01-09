@@ -27,7 +27,9 @@ public final class ContainerProvider implements IProvider {
   private ServiceProvider services;
 
   private ContainerProvider() {
-    containers = new WritableList<>();
+    Display.getDefault().syncExec(() -> {
+          containers = new WritableList<>();
+        });
     lut = new HashMap<>();
 
     services = ServiceProvider.INSTANCE;
