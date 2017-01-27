@@ -47,6 +47,8 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     String serviceId = config.getAttribute(LaunchDeployConfig.SERVICE_ID, "");
     Service service = ServiceProvider.INSTANCE.get(serviceId);
 
+    // Force container update in order to operate on a fresh list.
+    ContainerProvider.INSTANCE.update();
     String containerId =
         config.getAttribute(LaunchDeployConfig.CONTAINER_ID, "");
     Container container = ContainerProvider.INSTANCE.get(containerId);
