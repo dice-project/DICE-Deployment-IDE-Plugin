@@ -1,7 +1,5 @@
 package org.dice.deployments.datastore;
 
-import java.net.URL;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
