@@ -25,52 +25,65 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
   @Override
   public void launch(ILaunchConfiguration config, String mode, ILaunch launch,
       IProgressMonitor monitor) throws CoreException {
-    IProject project = Utils
-        .getResourceFromPath(
-            config.getAttribute(LaunchDeployConfig.BLUEPRINT_PATH, ""))
-        .getProject();
-    DeploymentProvider provider = DeploymentProvider.getProvider(project);
+    SubMonitor sub = SubMonitor.convert(monitor, 100);
 
-    Path archive = null;
+    String blueprintPath =
+        config.getAttribute(LaunchDeployConfig.BLUEPRINT_PATH, "");
+    String resourcesPath =
+        config.getAttribute(LaunchDeployConfig.RESOURCES_PATH, "");
+    String serviceId = config.getAttribute(LaunchDeployConfig.SERVICE_ID, "");
+    String containerId =
+        config.getAttribute(LaunchDeployConfig.CONTAINER_ID, "");
+
+    Path archive;
     try {
-      archive =
-          Files.createTempDirectory("blueprint-").resolve("blueprint.yaml");
-      Path local = Paths
-          .get(config.getAttribute(LaunchDeployConfig.BLUEPRINT_PATH, ""));
-      Files.copy(local, archive);
+      archive = packageBlueprintData(blueprintPath, resourcesPath);
     } catch (IOException e) {
-      // TODO: What would be the course of action if /tmp is not working?
+      System.err.println("Failed to create blueprint archive.");
       e.printStackTrace();
       return;
     }
-
-    String serviceId = config.getAttribute(LaunchDeployConfig.SERVICE_ID, "");
-    Service service = ServiceProvider.INSTANCE.get(serviceId);
+    sub.worked(20);
 
     // Force container update in order to operate on a fresh list.
     ContainerProvider.INSTANCE.update();
-    String containerId =
-        config.getAttribute(LaunchDeployConfig.CONTAINER_ID, "");
     Container container = ContainerProvider.INSTANCE.get(containerId);
 
+    Service service = ServiceProvider.INSTANCE.get(serviceId);
     service.emptyContainer(container);
     ContainerProvider.INSTANCE.update();
     if (!container.waitWhileBusy()) {
-      // TODO: Inform user about error
+      System.err.printf("Failed to empty the container %s\n", containerId);
       return;
     }
+    sub.worked(20);
 
     Blueprint blueprint = service.deployBlueprint(container, archive.toFile());
     if (blueprint == null) {
-      // TODO: Inform user about error
+      System.err.printf("Failed to upload the blueprint to container %s\n",
+          containerId);
       return;
     }
+
+    // TODO: Add check for project here
+    IProject project = Utils.getResourceFromPath(blueprintPath).getProject();
+    DeploymentProvider provider = DeploymentProvider.getProvider(project);
     provider.createDeloyment(blueprint);
     ContainerProvider.INSTANCE.update();
     container.waitWhileBusy();
 
-    SubMonitor sub = SubMonitor.convert(monitor, 10);
-    sub.worked(10);
+    sub.worked(60);
+  }
+
+  private static Path packageBlueprintData(String blueprintPath,
+      String resourcesPath) throws IOException {
+    Path archive = Files.createTempFile("blueprint-", ".tar.gz");
+    TarGz c = new TarGz(archive.toString(), "blueprint");
+    c.writeFile(Paths.get(blueprintPath), "blueprint.yaml");
+    c.writeDir(Paths.get(resourcesPath));
+    c.close();
+
+    return archive;
   }
 
 }
