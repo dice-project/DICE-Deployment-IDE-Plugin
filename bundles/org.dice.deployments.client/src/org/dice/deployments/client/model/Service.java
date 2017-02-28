@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.http.Client;
 import org.dice.deployments.client.http.Result;
 
@@ -20,25 +21,31 @@ public class Service extends ModelObject {
   private String container;
   private String username;
   private String password;
+  private String keystoreFile;
+  private String keystorePass;
 
   private Client client;
 
   public Service(String id, String name, String address, String container,
-      String username, String password) {
+      String username, String password, String keystoreFile,
+      String keystorePass) {
     this.id = id;
     this.name = name;
     this.address = address;
     this.container = container;
     this.username = username;
     this.password = password;
+    this.keystoreFile = keystoreFile;
+    this.keystorePass = keystorePass;
   }
 
   public Service() {
-    this(UUID.randomUUID().toString(), "", "", "", "", "");
+    this(UUID.randomUUID().toString(), "", "", "", "", "", "", "");
   }
 
   public Service(Service s) {
-    this(s.id, s.name, s.address, s.container, s.username, s.password);
+    this(s.id, s.name, s.address, s.container, s.username, s.password,
+        s.keystoreFile, s.keystorePass);
   }
 
   // Getters and setters
@@ -89,6 +96,26 @@ public class Service extends ModelObject {
     return id;
   }
 
+  public String getKeystoreFile() {
+    return keystoreFile;
+  }
+
+  public void setKeystoreFile(String keystoreFile) {
+    closeClient();
+    fireChange("keystoreFile", this.keystoreFile,
+        this.keystoreFile = keystoreFile);
+  }
+
+  public String getKeystorePass() {
+    return keystorePass;
+  }
+
+  public void setKeystorePass(String keystorePass) {
+    closeClient();
+    fireChange("keystorePass", this.keystorePass,
+        this.keystorePass = keystorePass);
+  }
+
   // Aux methods
   public void update(Service s) {
     if (!s.id.equals(id)) {
@@ -101,6 +128,8 @@ public class Service extends ModelObject {
     setContainer(s.container);
     setUsername(s.username);
     setPassword(s.password);
+    setKeystoreFile(s.keystoreFile);
+    setKeystorePass(s.keystorePass);
   }
 
   private void closeClient() {
@@ -120,13 +149,15 @@ public class Service extends ModelObject {
     try {
       validateName();
       URI uri = validateURI();
-      client = new Client(uri, 2000);
+      client = new Client(uri, 2000, keystoreFile, keystorePass);
       validateService(client);
       validateAuth(client);
     } catch (RuntimeException e) {
       msg = e.getMessage();
     } catch (IOException e) {
       msg = "Cannot connect to service. Check connectivity.";
+    } catch (ClientError e) {
+      msg = e.getMessage();
     } finally {
       if (client != null && msg != null) {
         client.close();

@@ -45,7 +45,8 @@ public class ServiceProvider implements IProvider {
     ISecurePreferences node = parent.node(id);
     return new Service(id, node.get("name", ""), node.get("address", ""),
         node.get("container", ""), node.get("username", ""),
-        node.get("password", ""));
+        node.get("password", ""), node.get("keystoreFile", ""),
+        node.get("keystorePass", ""));
   }
 
   public void add(Service s) {
@@ -87,6 +88,8 @@ public class ServiceProvider implements IProvider {
         service.put("container", s.getContainer(), false);
         service.put("username", s.getUsername(), true);
         service.put("password", s.getPassword(), true);
+        service.put("keystoreFile", s.getKeystoreFile(), true);
+        service.put("keystorePass", s.getKeystorePass(), true);
       }
       prefs.put("list", String.join(",", ids), false);
       prefs.flush();

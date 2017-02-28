@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -82,11 +83,15 @@ public class EditService extends TitleAreaDialog {
   protected Control createDialogArea(Composite parent) {
     Composite main = new Composite(parent, SWT.NONE);
     GridLayout layout = new GridLayout();
-    layout.numColumns = 2;
+    layout.numColumns = 3;
     main.setLayout(layout);
     GridDataFactory.fillDefaults().grab(true, true).applyTo(main);
 
     createInput(main, "Name", update.getName(), update::setName);
+    createFileSelector(main, "Keystore file", update.getKeystoreFile(),
+        update::setKeystoreFile);
+    createInput(main, "Keystore password", update.getKeystorePass(),
+        update::setKeystorePass);
     createInput(main, "Address", update.getAddress(), update::setAddress);
     createInput(main, "Username", update.getUsername(), update::setUsername);
     createInput(main, "Password", update.getPassword(), update::setPassword);
@@ -134,7 +139,24 @@ public class EditService extends TitleAreaDialog {
    * GUI construction helpers
    * ***********************************************************************
    */
-  private Text createInput(Composite parent, String name, String init,
+  private void createInput(Composite parent, String name, String init,
+      Consumer<String> consumer) {
+    Label label = new Label(parent, SWT.NONE);
+    label.setText(name);
+
+    Text text = new Text(parent, SWT.BORDER);
+    text.setText(init);
+    GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(text);
+
+    ISWTObservableValue val = WidgetProperties.text(SWT.Modify).observe(text);
+    ISideEffectFactory factory = WidgetSideEffects.createFactory(text);
+    factory.create(() -> (String) val.getValue(), data -> {
+      consumer.accept(data);
+      updateDialog();
+    });
+  }
+
+  private void createFileSelector(Composite parent, String name, String init,
       Consumer<String> consumer) {
     Label label = new Label(parent, SWT.NONE);
     label.setText(name);
@@ -150,7 +172,7 @@ public class EditService extends TitleAreaDialog {
       updateDialog();
     });
 
-    return text;
+    Utils.createPathSelector(parent, text, FileDialog.class);
   }
 
   private void createContainerSelector(Composite parent) {
@@ -176,7 +198,7 @@ public class EditService extends TitleAreaDialog {
         update.setContainer(c == null ? "" : c.getId());
       }
     });
-    GridDataFactory.fillDefaults().grab(true, false)
+    GridDataFactory.fillDefaults().grab(true, false).span(2, 1)
         .applyTo(containers.getCombo());
   }
 

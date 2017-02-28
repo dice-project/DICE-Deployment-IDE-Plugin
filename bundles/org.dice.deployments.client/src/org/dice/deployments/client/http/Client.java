@@ -1,20 +1,33 @@
 package org.dice.deployments.client.http;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.model.Blueprint;
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Message;
@@ -33,11 +46,33 @@ public class Client {
   private URI address;
   private Gson parser;
 
-  public Client(URI baseAddress, int timeout) {
+  public Client(URI baseAddress, int timeout, String keystoreFile,
+      String keystorePass) throws ClientError {
     final RequestConfig config = RequestConfig.custom()
         .setConnectTimeout(timeout).setConnectionRequestTimeout(timeout)
         .setSocketTimeout(timeout).build();
-    http = HttpClients.custom().setDefaultRequestConfig(config).build();
+
+    HttpClientBuilder builder =
+        HttpClients.custom().setDefaultRequestConfig(config);
+
+    if (keystoreFile != null && !keystoreFile.equals("")) {
+      try {
+        KeyStore tks = KeyStore.getInstance(KeyStore.getDefaultType());
+        tks.load(new FileInputStream(keystoreFile),
+            keystorePass.toCharArray());
+        SSLContext sslCtx = SSLContexts.custom()
+            .loadTrustMaterial(tks, new TrustSelfSignedStrategy()).build();
+        SSLConnectionSocketFactory csf =
+            new SSLConnectionSocketFactory(sslCtx, new String[] {"TLSv1"},
+                null, SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER);
+        builder.setSSLSocketFactory(csf);
+      } catch (NoSuchAlgorithmException | CertificateException
+          | KeyStoreException | KeyManagementException | IOException e) {
+        throw new ClientError(e.getMessage());
+      }
+    }
+
+    http = builder.build();
     token = null;
     address = baseAddress;
     parser = new GsonBuilder().serializeNulls()
@@ -45,8 +80,9 @@ public class Client {
         .excludeFieldsWithoutExposeAnnotation().create();
   }
 
-  public Client(URI baseAddress) {
-    this(baseAddress, CONNECTION_TIMEOUT_MS);
+  public Client(URI baseAddress, String keystoreFile, String keystorePass)
+      throws ClientError {
+    this(baseAddress, CONNECTION_TIMEOUT_MS, keystoreFile, keystorePass);
   }
 
   public boolean authenticate(String username, String password)

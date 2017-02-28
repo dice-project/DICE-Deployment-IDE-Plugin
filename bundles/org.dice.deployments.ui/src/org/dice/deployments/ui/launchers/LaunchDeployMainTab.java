@@ -1,18 +1,14 @@
 package org.dice.deployments.ui.launchers;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Service;
 import org.dice.deployments.datastore.model.ServiceProvider;
 import org.dice.deployments.ui.Utils;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ICoreRunnable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
@@ -32,11 +28,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -44,7 +37,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class LaunchDeployMainTab implements ILaunchConfigurationTab {
@@ -216,7 +208,7 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
     });
     GridDataFactory.fillDefaults().grab(true, false).applyTo(blueprintText);
 
-    createPathSelector(parent, blueprintText, FileDialog.class);
+    Utils.createPathSelector(parent, blueprintText, FileDialog.class);
   }
 
   private void createResourceSelector(Composite parent) {
@@ -233,45 +225,7 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
     });
     GridDataFactory.fillDefaults().grab(true, false).applyTo(resourcesText);
 
-    createPathSelector(parent, resourcesText, DirectoryDialog.class);
-  }
-
-  private <T> Button createPathSelector(Composite parent, Text target,
-      Class<T> dialogClass) {
-    /*
-     * This method is not the most beautiful piece of code ever written, but it
-     * should get the work done without duplicating the code in each "browse"
-     * button that we would like to create.
-     */
-    Button button = new Button(parent, SWT.NONE);
-    button.setText("Browse");
-    button.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent event) {
-        IPath path = Utils.getActiveWorkspace().getLocation();
-        IProject project = Utils.getActiveProject();
-        if (project != null) {
-          path = project.getLocation();
-        }
-
-        try {
-          Constructor<T> con = dialogClass.getConstructor(Shell.class);
-          T dialog = con.newInstance(control.getShell());
-          Method m = dialogClass.getMethod("setFilterPath", String.class);
-          m.invoke(dialog, path.toOSString());
-          m = dialogClass.getMethod("open");
-          String value = (String) m.invoke(dialog);
-          if (value != null) {
-            target.setText(value);
-          }
-        } catch (Exception e) {
-          // This should not happen and indicates bug in plugin
-          e.printStackTrace();
-        }
-      }
-    });
-
-    return button;
+    Utils.createPathSelector(parent, resourcesText, DirectoryDialog.class);
   }
 
   private void createServiceGroup(Composite control) {
