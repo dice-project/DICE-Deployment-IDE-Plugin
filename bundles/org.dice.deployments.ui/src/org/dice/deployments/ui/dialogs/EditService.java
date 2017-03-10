@@ -91,10 +91,11 @@ public class EditService extends TitleAreaDialog {
     createFileSelector(main, "Keystore file", update.getKeystoreFile(),
         update::setKeystoreFile);
     createInput(main, "Keystore password", update.getKeystorePass(),
-        update::setKeystorePass);
+        update::setKeystorePass, SWT.PASSWORD);
     createInput(main, "Address", update.getAddress(), update::setAddress);
     createInput(main, "Username", update.getUsername(), update::setUsername);
-    createInput(main, "Password", update.getPassword(), update::setPassword);
+    createInput(main, "Password", update.getPassword(), update::setPassword,
+        SWT.PASSWORD);
     createContainerSelector(main);
 
     return main;
@@ -140,11 +141,11 @@ public class EditService extends TitleAreaDialog {
    * ***********************************************************************
    */
   private void createInput(Composite parent, String name, String init,
-      Consumer<String> consumer) {
+      Consumer<String> consumer, int style) {
     Label label = new Label(parent, SWT.NONE);
     label.setText(name);
 
-    Text text = new Text(parent, SWT.BORDER);
+    Text text = new Text(parent, SWT.BORDER | style);
     text.setText(init);
     GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(text);
 
@@ -154,6 +155,11 @@ public class EditService extends TitleAreaDialog {
       consumer.accept(data);
       updateDialog();
     });
+  }
+
+  private void createInput(Composite parent, String name, String init,
+      Consumer<String> consumer) {
+    createInput(parent, name, init, consumer, 0);
   }
 
   private void createFileSelector(Composite parent, String name, String init,
