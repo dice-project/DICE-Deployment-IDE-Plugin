@@ -80,5 +80,18 @@
          </command>
       </menuContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <cheatsheet
+            category="org.dice.methodology.tools.category"
+            composite="true"
+            contentFile="cheatsheets/main.xml"
+            id="org.dice.deployments.ui.cheatsheet"
+            name="Delivery Tool">
+         <description>
+            Learn how to use the DICE Delivery Tool
+         </description>
+      </cheatsheet>
+   </extension>
 
 </plugin>
