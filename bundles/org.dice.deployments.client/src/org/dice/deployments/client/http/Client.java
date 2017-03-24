@@ -20,13 +20,14 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.model.Blueprint;
 import org.dice.deployments.client.model.Container;
@@ -64,7 +65,7 @@ public class Client {
             .loadTrustMaterial(tks, new TrustSelfSignedStrategy()).build();
         SSLConnectionSocketFactory csf =
             new SSLConnectionSocketFactory(sslCtx, new String[] {"TLSv1"},
-                null, SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER);
+                null, new DefaultHostnameVerifier());
         builder.setSSLSocketFactory(csf);
       } catch (NoSuchAlgorithmException | CertificateException
           | KeyStoreException | KeyManagementException | IOException e) {
