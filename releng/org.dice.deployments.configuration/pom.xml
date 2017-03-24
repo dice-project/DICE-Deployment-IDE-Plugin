@@ -12,15 +12,21 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho.version>0.26.0</tycho.version>
+    <tycho.version>1.0.0</tycho.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <neon-repo.url>http://download.eclipse.org/releases/neon</neon-repo.url>
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/R-builds/R20170307180635/repository</orbit-repo.url>
   </properties>
 
   <repositories>
     <repository>
       <id>neon</id>
       <url>${neon-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>orbit</id>
+      <url>${orbit-repo.url}</url>
       <layout>p2</layout>
     </repository>
   </repositories>

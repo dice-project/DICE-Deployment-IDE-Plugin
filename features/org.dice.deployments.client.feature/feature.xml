@@ -105,8 +105,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <requires>
       <import plugin="com.google.gson" version="2.2.4" match="greaterOrEqual"/>
-      <import plugin="org.apache.httpcomponents.httpclient" version="4.3.6" match="greaterOrEqual"/>
-      <import plugin="org.apache.httpcomponents.httpcore" version="4.3.3" match="greaterOrEqual"/>
+      <import plugin="org.apache.httpcomponents.httpclient" version="4.5.2" match="greaterOrEqual"/>
+      <import plugin="org.apache.httpcomponents.httpcore" version="4.4.6" match="greaterOrEqual"/>
    </requires>
 
    <plugin
