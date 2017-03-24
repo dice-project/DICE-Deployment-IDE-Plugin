@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DICE Platform UI shim
+Bundle-SymbolicName: org.dice.compat;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: XLAB
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.cheatsheets
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

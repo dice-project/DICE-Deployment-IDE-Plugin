@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="DICE"
+            class="org.dice.compat.preferences.MockPreferencesPage"
+            id="org.dice.ui.preferences">
+      </page>
+   </extension>
+   <extension
+         id="org.dice.cheatsheet.main"
+         name="DICE Cheat Sheet Main"
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <category
+            id="org.dice.methodology.category"
+            name="DICE Framework">
+      </category>
+      <category
+            id="org.dice.methodology.tools.category"
+            name="DICE Tools"
+            parentCategory="org.dice.methodology.category">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.dice.menu.tools"
+               label="DICE Tools">
+         </menu>
+      </menuContribution>
+   </extension>
+
+</plugin>

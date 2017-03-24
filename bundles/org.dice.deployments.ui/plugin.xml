@@ -4,6 +4,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.dice.ui.preferences"
             class="org.dice.deployments.ui.preferences.pages.MainPage"
             id="org.dice.deployments.ui.preferences.pages.Main"
             name="Deployment Tools">
@@ -47,7 +48,7 @@
          point="org.eclipse.ui.views">
       <category
             id="org.dice.deployments.ui"
-            name="Deployment Service">
+            name="Delivery Tool">
       </category>
       <view
             allowMultiple="false"
