@@ -59,5 +59,26 @@
             name="Container List">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.dice.deployments.ui.commands.OpenRunConfig"
+            id="org.dice.deployments.ui.commands.OpenRunConfig"
+            name="DICE Delivery Tool">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.dice.menu.tools">
+         <command
+               commandId="org.dice.deployments.ui.commands.OpenRunConfig"
+               icon="icons/deployments.png"
+               label="DICE Delivery Tool"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
 
 </plugin>
