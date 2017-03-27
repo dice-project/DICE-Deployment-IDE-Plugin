@@ -105,6 +105,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <requires>
       <import plugin="org.eclipse.ui" version="3.108.0" match="greaterOrEqual"/>
+      <import plugin="org.dice.deployments.datastore" version="0.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.databinding" version="1.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface.databinding" version="1.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.databinding.beans" version="1.3.100" match="greaterOrEqual"/>
@@ -113,7 +114,9 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.dice.deployments.client" version="0.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.12.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.databinding.property" version="1.6.0" match="greaterOrEqual"/>
-      <import plugin="org.dice.deployments.datastore" version="0.3.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.compress" version="1.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.cheatsheets"/>
+      <import feature="org.dice.deployments.datastore.feature" version="0.3.0.qualifier"/>
    </requires>
 
    <plugin
