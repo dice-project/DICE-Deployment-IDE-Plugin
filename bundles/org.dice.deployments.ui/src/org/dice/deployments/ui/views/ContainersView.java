@@ -44,6 +44,8 @@ public class ContainersView extends ViewPart {
     createColumn(viewer, "Id", "id", elements);
     createColumn(viewer, "Description", "description", elements);
     createColumn(viewer, "State", "state", elements);
+    createColumn(viewer, "In error?", "inError", elements);
+    createColumn(viewer, "Error message", "error", elements);
 
     viewer.setContentProvider(provider);
     viewer.setInput(ContainerProvider.INSTANCE.get());

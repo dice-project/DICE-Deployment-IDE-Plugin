@@ -49,6 +49,17 @@ public class Container extends ModelObject {
     return blueprint == null ? "empty" : blueprint.getStateName();
   }
 
+  public String getInError() {
+    return blueprint == null || !blueprint.getInError() ? "no" : "yes";
+  }
+
+  public String getError() {
+    if (blueprint == null || blueprint.getErrors().length == 0) {
+      return "";
+    }
+    return blueprint.getErrors()[0].getMessage();
+  }
+
   public void update(Container c) {
     if (!c.id.equals(id)) {
       return;

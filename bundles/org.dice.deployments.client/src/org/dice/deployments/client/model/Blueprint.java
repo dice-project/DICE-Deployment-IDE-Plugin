@@ -10,6 +10,8 @@ public class Blueprint extends ModelObject {
   private String stateName;
   @Expose
   private Boolean inError;
+  @Expose
+  private Error[] errors;
 
   public String getStateName() {
     return stateName;
@@ -29,6 +31,14 @@ public class Blueprint extends ModelObject {
 
   public String getId() {
     return id;
+  }
+
+  public Error[] getErrors() {
+    return errors;
+  }
+
+  public void setErrors(Error[] errors) {
+    fireChange("errors", null, this.errors = errors);
   }
 
   @Override
@@ -53,6 +63,7 @@ public class Blueprint extends ModelObject {
 
     setStateName(b.stateName);
     setInError(b.inError);
+    setErrors(b.errors);
   }
 
 }
