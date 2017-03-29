@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.StringJoiner;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -35,21 +36,17 @@ public class TarGz {
       toplevel = dir;
     }
 
-    private String getEntryName(Path path) {
-      return prefix.resolve(toplevel.relativize(path)).toString();
-    }
-
     @Override
     public FileVisitResult preVisitDirectory(Path dir,
         BasicFileAttributes attrs) throws IOException {
-      writeEntry(dir, getEntryName(dir), false);
+      writeEntry(dir, getEntryName(toplevel.relativize(dir)), false);
       return FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
         throws IOException {
-      writeEntry(file, getEntryName(file), true);
+      writeEntry(file, getEntryName(toplevel.relativize(file)), true);
       return FileVisitResult.CONTINUE;
     }
 
@@ -78,7 +75,7 @@ public class TarGz {
 
   public void writeFile(Path file, String name) throws IOException {
     Path entryPath = name != null ? Paths.get(name) : file.getFileName();
-    String entryName = prefix.resolve(entryPath).toString();
+    String entryName = getEntryName(entryPath);
     writeEntry(file, entryName, true);
   }
 
@@ -90,6 +87,12 @@ public class TarGz {
       IOUtils.copy(getInputStream(resource), output);
     }
     output.closeArchiveEntry();
+  }
+
+  private String getEntryName(Path path) {
+    StringJoiner sj = new StringJoiner("/");
+    prefix.resolve(path).forEach(p -> sj.add(p.toString()));
+    return sj.toString();
   }
 
 }
