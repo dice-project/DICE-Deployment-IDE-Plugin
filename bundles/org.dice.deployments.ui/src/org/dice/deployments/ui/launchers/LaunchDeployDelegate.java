@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.dice.deployments.client.model.Blueprint;
 import org.dice.deployments.client.model.Container;
@@ -15,10 +17,16 @@ import org.dice.deployments.ui.Utils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
 
@@ -39,8 +47,7 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     try {
       archive = packageBlueprintData(blueprintPath, resourcesPath);
     } catch (IOException e) {
-      System.err.println("Failed to create blueprint archive.");
-      e.printStackTrace();
+      showError("Failed to create blueprint archive.", e);
       return;
     }
     sub.worked(20);
@@ -73,6 +80,27 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     container.waitWhileBusy();
 
     sub.worked(60);
+  }
+
+  private void showError(String message, Exception e) {
+    MultiStatus status = createMultiStatus(e);
+    PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+      Shell shell =
+          PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+      ErrorDialog.openError(shell, "Error", message, status);
+    });
+  }
+
+  private static MultiStatus createMultiStatus(Exception e) {
+    List<Status> statuses = new ArrayList<>();
+    StackTraceElement[] stackTraces = e.getStackTrace();
+    for (StackTraceElement stackTrace : stackTraces) {
+      Status status = new Status(IStatus.ERROR, "org.dice.deployments.ui",
+          stackTrace.toString());
+      statuses.add(status);
+    }
+    return new MultiStatus("org.dice.deployments.ui", IStatus.ERROR,
+        statuses.toArray(new Status[] {}), e.getLocalizedMessage(), e);
   }
 
   private static Path packageBlueprintData(String blueprintPath,
