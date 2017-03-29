@@ -55,15 +55,7 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     // Force container update in order to operate on a fresh list.
     ContainerProvider.INSTANCE.update();
     Container container = ContainerProvider.INSTANCE.get(containerId);
-
     Service service = ServiceProvider.INSTANCE.get(serviceId);
-    service.emptyContainer(container);
-    ContainerProvider.INSTANCE.update();
-    if (!container.waitWhileBusy()) {
-      System.err.printf("Failed to empty the container %s\n", containerId);
-      return;
-    }
-    sub.worked(20);
 
     Blueprint blueprint = service.deployBlueprint(container, archive.toFile());
     if (blueprint == null) {
@@ -79,7 +71,7 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     ContainerProvider.INSTANCE.update();
     container.waitWhileBusy();
 
-    sub.worked(60);
+    sub.worked(80);
   }
 
   private void showError(String message, Exception e) {
