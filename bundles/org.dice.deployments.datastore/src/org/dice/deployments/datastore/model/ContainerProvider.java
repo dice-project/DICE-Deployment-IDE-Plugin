@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Service;
+import org.dice.deployments.datastore.Activator;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ICoreRunnable;
@@ -35,6 +36,7 @@ public final class ContainerProvider implements IProvider {
     services = ServiceProvider.INSTANCE;
 
     updater = createUpdater(UPDATE_DELAY_MS);
+    Activator.registerJob(updater);
     updater.schedule();
   }
 
