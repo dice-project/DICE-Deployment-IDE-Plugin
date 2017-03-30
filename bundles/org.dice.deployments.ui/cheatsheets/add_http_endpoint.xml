@@ -19,7 +19,7 @@
       </description>
       <command
             required="false"
-            serialization="org.eclipse.recommenders.utils.rcp.commands.openPreferences(org.eclipse.recommenders.utils.rcp.linkContribution.href=org.dice.deployments.ui.preferences.pages.Main)"/>
+            serialization="org.eclipse.ui.window.preferences(preferencePageId=org.dice.deployments.ui.preferences.pages.Main)"/>
    </item>
    <item
          title="Open dialog for adding new service">
