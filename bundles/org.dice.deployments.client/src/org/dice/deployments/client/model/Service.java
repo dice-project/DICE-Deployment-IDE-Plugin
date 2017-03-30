@@ -1,7 +1,6 @@
 package org.dice.deployments.client.model;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -154,8 +153,6 @@ public class Service extends ModelObject {
       validateAuth(client);
     } catch (RuntimeException e) {
       msg = e.getMessage();
-    } catch (IOException e) {
-      msg = "Cannot connect to service. Check connectivity.";
     } catch (ClientError e) {
       msg = e.getMessage();
     } finally {
@@ -188,81 +185,67 @@ public class Service extends ModelObject {
     return uri;
   }
 
-  private void validateService(Client c) throws IOException {
-    if (!c.getHeartbeat()) {
-      throw new RuntimeException("Service is not responding. Check address.");
+  private void validateService(Client c) {
+    try {
+      if (c.getHeartbeat()) {
+        return;
+      }
+    } catch (ClientError e) {
     }
+    throw new RuntimeException("Service is not responding. Check address.");
   }
 
-  private void validateAuth(Client c) throws IOException {
-    if (!c.authenticate(username, password)) {
-      throw new RuntimeException("Invalid username and/or password.");
+  private void validateAuth(Client c) {
+    try {
+      if (c.authenticate(username, password)) {
+        return;
+      }
+    } catch (ClientError e) {
     }
+    throw new RuntimeException("Invalid username and/or password.");
   }
 
-  public Set<Container> listContainers() {
+  public Set<Container> listContainers() throws ClientError {
     // TODO: This is quite bad, but should suffice for now. In the future, it
     // would be best not to allow service to exist if validation fails, but
     // this would have a nasty side effect that service cannot be added or
     // loaded if something went wrong with connection.
     Set<Container> result = new HashSet<>();
 
-    if (ensureClient()) {
-      try {
-        Result<Container[], Message> r = client.listContainers();
-        if (r.ok) {
-          result.addAll(Arrays.asList(r.first));
-        }
-        // TODO: Add user warning or log message about failed fetch
-      } catch (IOException e) {
-        // Default return value handles this for now.
-      }
+    ensureClient();
+    Result<Container[], Message> r = client.listContainers();
+    if (r.ok) {
+      result.addAll(Arrays.asList(r.first));
     }
     return result;
   }
 
-  private boolean ensureClient() {
-    if (client == null) {
-      validate();
+  private void ensureClient() throws ClientError {
+    if (client != null) {
+      return;
     }
-    return client != null;
+
+    String msg = validate();
+    if (msg != null) {
+      throw new ClientError(msg);
+    }
   }
 
-  public boolean emptyContainer(Container c) {
+  public boolean emptyContainer(Container c) throws ClientError {
     if (c.getBlueprint() != null) {
-      if (!ensureClient()) {
-        // TODO: log this error
-        return false;
-      }
-
-      try {
-        client.undeployBlueprint(c.getId());
-      } catch (IOException e) {
-        // TODO: log this error
-        return false;
-      }
+      ensureClient();
+      client.undeployBlueprint(c.getId());
     }
 
     return true;
   }
 
-  public Blueprint deployBlueprint(Container c, File archive) {
-    if (!ensureClient()) {
-      // TODO: log this error
-      return null;
-    }
-
-    try {
-      Result<Blueprint, Message> res =
-          client.deployBlueprint(c.getId(), archive);
-      if (res.ok) {
-        return res.first;
-      }
-    } catch (IOException e) {
-      // TODO: log this error
-    }
-
-    return null;
+  public Blueprint deployBlueprint(Container c, File archive)
+      throws ClientError {
+    ensureClient();
+    Result<Blueprint, Message> res =
+        client.deployBlueprint(c.getId(), archive);
+    return res.ok ? res.first : null;
   }
 
   @Override

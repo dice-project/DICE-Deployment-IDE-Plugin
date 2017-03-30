@@ -87,7 +87,7 @@ public class Client {
   }
 
   public boolean authenticate(String username, String password)
-      throws IOException {
+      throws ClientError {
     Map<String, String> data = new HashMap<>();
     data.put("username", username);
     data.put("password", password);
@@ -111,32 +111,32 @@ public class Client {
   }
 
   // Heartbeat
-  public boolean getHeartbeat() throws IOException {
+  public boolean getHeartbeat() throws ClientError {
     Response response = get("/heartbeat", null);
     return response.statusCode == HttpStatus.SC_OK;
   }
 
   // Container methods
-  public Result<Container[], Message> listContainers() throws IOException {
+  public Result<Container[], Message> listContainers() throws ClientError {
     Response response = get("/containers", null);
     return getResult(response, Container[].class, HttpStatus.SC_OK);
   }
 
   public Result<Container, Message> getContainer(String id)
-      throws IOException {
+      throws ClientError {
     Response response = get("/containers/" + id, null);
     return getResult(response, Container.class, HttpStatus.SC_OK);
   }
 
   public Result<Blueprint, Message> deployBlueprint(String containerId,
-      File blueprint) throws IOException {
+      File blueprint) throws ClientError {
     String path = String.format("/containers/%s/blueprint", containerId);
     Response response = post(path, null, blueprint);
     return getResult(response, Blueprint.class, HttpStatus.SC_ACCEPTED);
   }
 
   public Result<Blueprint, Message> undeployBlueprint(String containerId)
-      throws IOException {
+      throws ClientError {
     String path = String.format("/containers/%s/blueprint", containerId);
     Response response = delete(path, null);
     return getResult(response, Blueprint.class, HttpStatus.SC_ACCEPTED);
@@ -160,7 +160,8 @@ public class Client {
     return new Result<>(parser.fromJson(response.asString(), klass), null);
   }
 
-  private URI buildURI(String path, Map<String, String> params) {
+  private URI buildURI(String path, Map<String, String> params)
+      throws ClientError {
     URIBuilder builder = new URIBuilder(address);
     builder.setPath(builder.getPath() + path);
     if (params != null) {
@@ -171,7 +172,7 @@ public class Client {
     try {
       return builder.build();
     } catch (URISyntaxException e) {
-      throw new InternalError(String.format("Bad path: %d", path));
+      throw new ClientError(String.format("Bad path: %d", path));
     }
   }
 
@@ -181,16 +182,18 @@ public class Client {
     }
   }
 
-  private Response execute(RequestBuilder builder) throws IOException {
+  private Response execute(RequestBuilder builder) throws ClientError {
+    Response response = null;
     try {
-      return new Response(http.execute(builder.build()));
-    } catch (IllegalStateException e) {
-      return null;
+      response = new Response(http.execute(builder.build()));
+    } catch (IOException e) {
+      throw new ClientError(e.getMessage());
     }
+    return response;
   }
 
   private Response get(String path, Map<String, String> params)
-      throws IOException {
+      throws ClientError {
     RequestBuilder builder =
         RequestBuilder.get().setUri(buildURI(path, params));
     addAuth(builder);
@@ -198,7 +201,7 @@ public class Client {
   }
 
   private Response post(String path, Map<String, String> params,
-      Map<String, String> data) throws IOException {
+      Map<String, String> data) throws ClientError {
     RequestBuilder builder =
         RequestBuilder.post().setUri(buildURI(path, params));
     if (data != null) {
@@ -211,7 +214,7 @@ public class Client {
   }
 
   private Response post(String path, Map<String, String> params, File file)
-      throws IOException {
+      throws ClientError {
     RequestBuilder builder =
         RequestBuilder.post().setUri(buildURI(path, params));
     addAuth(builder);
@@ -222,7 +225,7 @@ public class Client {
   }
 
   private Response delete(String path, Map<String, String> params)
-      throws IOException {
+      throws ClientError {
     RequestBuilder builder =
         RequestBuilder.delete().setUri(buildURI(path, params));
     addAuth(builder);
