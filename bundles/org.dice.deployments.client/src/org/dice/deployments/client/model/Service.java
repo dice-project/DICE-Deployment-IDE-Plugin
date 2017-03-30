@@ -231,21 +231,19 @@ public class Service extends ModelObject {
     }
   }
 
-  public boolean emptyContainer(Container c) throws ClientError {
-    if (c.getBlueprint() != null) {
-      ensureClient();
-      client.undeployBlueprint(c.getId());
+  public Result<Blueprint, Message> emptyContainer(Container c)
+      throws ClientError {
+    if (c.getBlueprint() == null) {
+      return null;
     }
-
-    return true;
+    ensureClient();
+    return client.undeployBlueprint(c.getId());
   }
 
-  public Blueprint deployBlueprint(Container c, File archive)
+  public Result<Blueprint, Message> deployBlueprint(Container c, File archive)
       throws ClientError {
     ensureClient();
-    Result<Blueprint, Message> res =
-        client.deployBlueprint(c.getId(), archive);
-    return res.ok ? res.first : null;
+    return client.deployBlueprint(c.getId(), archive);
   }
 
   @Override

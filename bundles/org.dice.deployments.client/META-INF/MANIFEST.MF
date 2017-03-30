@@ -5,7 +5,9 @@ Bundle-SymbolicName: org.dice.deployments.client
 Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: XLAB
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.dice.deployments.client.model
+Export-Package: org.dice.deployments.client.exception,
+ org.dice.deployments.client.http,
+ org.dice.deployments.client.model
 Require-Bundle: com.google.gson;bundle-version="2.2.4",
  org.apache.httpcomponents.httpclient;bundle-version="4.5.2",
  org.apache.httpcomponents.httpcore;bundle-version="4.4.6"
