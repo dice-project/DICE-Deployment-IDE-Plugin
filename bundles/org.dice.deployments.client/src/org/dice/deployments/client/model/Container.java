@@ -75,6 +75,8 @@ public class Container extends ModelObject {
       setBlueprint(c.blueprint);
     }
     fireChange("state", null, getState());
+    fireChange("inError", null, getState());
+    fireChange("error", null, getState());
   }
 
   @Override
