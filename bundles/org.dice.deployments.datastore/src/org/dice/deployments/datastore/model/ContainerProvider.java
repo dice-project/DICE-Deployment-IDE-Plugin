@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Service;
 import org.dice.deployments.datastore.Activator;
@@ -12,6 +13,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 
@@ -29,8 +31,8 @@ public final class ContainerProvider implements IProvider {
 
   private ContainerProvider() {
     Display.getDefault().syncExec(() -> {
-          containers = new WritableList<>();
-        });
+      containers = new WritableList<>();
+    });
     lut = new HashMap<>();
 
     services = ServiceProvider.INSTANCE;
@@ -55,8 +57,12 @@ public final class ContainerProvider implements IProvider {
   private Map<String, Container> fetchContainers(Collection<Service> ss) {
     Map<String, Container> cs = new HashMap<>();
     for (Service s : ss) {
-      for (Container c : s.listContainers()) {
-        cs.put(c.getId(), c);
+      try {
+        for (Container c : s.listContainers()) {
+          cs.put(c.getId(), c);
+        }
+      } catch (ClientError e) {
+        Activator.log(Status.ERROR, e.getMessage());
       }
     }
     return cs;

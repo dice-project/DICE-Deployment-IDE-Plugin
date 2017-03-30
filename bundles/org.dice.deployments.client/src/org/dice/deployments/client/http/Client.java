@@ -63,9 +63,8 @@ public class Client {
             keystorePass.toCharArray());
         SSLContext sslCtx = SSLContexts.custom()
             .loadTrustMaterial(tks, new TrustSelfSignedStrategy()).build();
-        SSLConnectionSocketFactory csf =
-            new SSLConnectionSocketFactory(sslCtx, new String[] {"TLSv1"},
-                null, new DefaultHostnameVerifier());
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslCtx,
+            new String[] {"TLSv1"}, null, new DefaultHostnameVerifier());
         builder.setSSLSocketFactory(csf);
       } catch (NoSuchAlgorithmException | CertificateException
           | KeyStoreException | KeyManagementException | IOException e) {

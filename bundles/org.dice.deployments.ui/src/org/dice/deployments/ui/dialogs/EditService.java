@@ -1,8 +1,10 @@
 package org.dice.deployments.ui.dialogs;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Service;
 import org.dice.deployments.ui.Utils;
@@ -249,7 +251,15 @@ public class EditService extends TitleAreaDialog {
   }
 
   private void updateContainerList() {
-    Set<Container> cs = update.listContainers();
+    Set<Container> cs;
+    String err = null;
+
+    try {
+      cs = update.listContainers();
+    } catch (ClientError e) {
+      err = e.getMessage();
+      cs = new HashSet<>();
+    }
 
     Container iter = cs.size() > 0 ? cs.iterator().next() : null;
     for (Container c : cs) {
@@ -259,16 +269,22 @@ public class EditService extends TitleAreaDialog {
       }
     }
 
-    final Container sel = iter;
+    err = err == null ? "Configured service has no containers." : err;
+    updateContainerCombo(iter, cs, err);
+  }
+
+  private void updateContainerCombo(Container item,
+      Set<Container> containerSet, String message) {
+    StructuredSelection sel =
+        item == null ? null : new StructuredSelection(item);
     Display.getDefault().syncExec(() -> {
-      containers.setInput(cs);
+      containers.setInput(containerSet);
+      containers.setSelection(sel);
       if (sel != null) {
-        containers.setSelection(new StructuredSelection(sel));
         okButton.setEnabled(true);
         setMessage("All ok.");
       } else {
-        containers.setSelection(null);
-        setErrorMessage("Configured service has no containers.");
+        setErrorMessage(message);
       }
     });
   }

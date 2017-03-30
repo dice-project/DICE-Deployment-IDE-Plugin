@@ -92,15 +92,14 @@ public class Container extends ModelObject {
     return id.hashCode();
   }
 
-  public boolean waitWhileBusy() {
+  public Blueprint waitWhileBusy() {
     while (busy) {
       try {
         Thread.sleep(SLEEP_INTERVAL_MS);
       } catch (InterruptedException e) {
       }
     }
-
-    return blueprint == null || !blueprint.getInError();
+    return blueprint;
   }
 
 }

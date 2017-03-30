@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
@@ -25,6 +26,14 @@ public class Activator extends Plugin {
 
   public static ISecurePreferences getPrefs() {
     return INSTANCE.prefs;
+  }
+
+  public static void log(int status, String message) {
+    log(status, message, null);
+  }
+
+  public static void log(int status, String message, Exception exception) {
+    INSTANCE.getLog().log(new Status(status, PLUGIN_ID, message));
   }
 
   @Override

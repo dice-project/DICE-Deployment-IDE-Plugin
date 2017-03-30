@@ -1,8 +1,10 @@
 package org.dice.deployments.ui.launchers;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
+import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.model.Container;
 import org.dice.deployments.client.model.Service;
 import org.dice.deployments.datastore.model.ServiceProvider;
@@ -346,7 +348,11 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
   }
 
   private boolean validateContainer() {
-    return container != null && service.listContainers().contains(container);
+    try {
+      return container != null && service.listContainers().contains(container);
+    } catch (ClientError e) {
+      return false;
+    }
   }
 
   private void scheduleContainerUpdate() {
@@ -366,7 +372,12 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
   }
 
   private void updateContainerList() {
-    Set<Container> cs = service.listContainers();
+    Set<Container> cs = new HashSet<>();
+    try {
+      cs = service.listContainers();
+    } catch (ClientError e) {
+      // TODO Log error to eclipse error console
+    }
 
     // Apply default selection
     container = null;
@@ -377,8 +388,9 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
       }
     }
 
+    final Set<Container> finalCs = cs;
     Display.getDefault().syncExec(() -> {
-      containerCombo.setInput(cs);
+      containerCombo.setInput(finalCs);
       if (container != null) {
         containerCombo.setSelection(new StructuredSelection(container));
       } else {
