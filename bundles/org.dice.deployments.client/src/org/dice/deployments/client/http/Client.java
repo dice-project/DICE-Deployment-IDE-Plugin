@@ -41,17 +41,19 @@ import com.google.gson.GsonBuilder;
 public class Client {
 
   private static final int CONNECTION_TIMEOUT_MS = 5000;
+  private static final int SOCKET_TIMEOUT_MS = 60000;
 
   private String token;
   private CloseableHttpClient http;
   private URI address;
   private Gson parser;
 
-  public Client(URI baseAddress, int timeout, String keystoreFile,
-      String keystorePass) throws ClientError {
-    final RequestConfig config = RequestConfig.custom()
-        .setConnectTimeout(timeout).setConnectionRequestTimeout(timeout)
-        .setSocketTimeout(timeout).build();
+  public Client(URI baseAddress, int connectionTimeout, int socketTimeout,
+      String keystoreFile, String keystorePass) throws ClientError {
+    final RequestConfig config =
+        RequestConfig.custom().setConnectTimeout(connectionTimeout)
+            .setConnectionRequestTimeout(connectionTimeout)
+            .setSocketTimeout(socketTimeout).build();
 
     HttpClientBuilder builder =
         HttpClients.custom().setDefaultRequestConfig(config);
@@ -82,7 +84,8 @@ public class Client {
 
   public Client(URI baseAddress, String keystoreFile, String keystorePass)
       throws ClientError {
-    this(baseAddress, CONNECTION_TIMEOUT_MS, keystoreFile, keystorePass);
+    this(baseAddress, CONNECTION_TIMEOUT_MS, SOCKET_TIMEOUT_MS, keystoreFile,
+        keystorePass);
   }
 
   public boolean authenticate(String username, String password)

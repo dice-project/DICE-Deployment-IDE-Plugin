@@ -148,7 +148,7 @@ public class Service extends ModelObject {
     try {
       validateName();
       URI uri = validateURI();
-      client = new Client(uri, 2000, keystoreFile, keystorePass);
+      client = new Client(uri, 2000, 2000, keystoreFile, keystorePass);
       validateService(client);
       validateAuth(client);
     } catch (RuntimeException e) {
