@@ -16,7 +16,7 @@
             delegate="org.dice.deployments.ui.launchers.LaunchDeployDelegate"
             id="org.dice.deployments.ui.launchDeployConfigurationType"
             modes="run, debug"
-            name="DICE Deploy">
+            name="DICE Deployments">
       </launchConfigurationType>
    </extension>
    <extension
@@ -64,7 +64,7 @@
       <command
             defaultHandler="org.dice.deployments.ui.commands.OpenRunConfig"
             id="org.dice.deployments.ui.commands.OpenRunConfig"
-            name="DICE Delivery Tool">
+            name="DICE Deployments">
       </command>
    </extension>
    <extension
@@ -75,7 +75,7 @@
          <command
                commandId="org.dice.deployments.ui.commands.OpenRunConfig"
                icon="icons/deployments.png"
-               label="DICE Delivery Tool"
+               label="DICE Deployments"
                style="push">
          </command>
       </menuContribution>
