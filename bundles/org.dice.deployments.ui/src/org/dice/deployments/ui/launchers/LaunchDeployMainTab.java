@@ -149,7 +149,7 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
 
   @Override
   public boolean canSave() {
-    return errMsg == null;
+    return true;
   }
 
   @Override
