@@ -72,7 +72,7 @@ public class ServiceProvider implements IProvider {
   }
 
   public Service getDefaultService() {
-    return services.get(0);
+    return services.size() == 0 ? null : services.get(0);
   }
 
   public boolean saveServices() {
