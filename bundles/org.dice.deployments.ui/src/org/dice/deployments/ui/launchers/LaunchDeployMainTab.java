@@ -325,6 +325,9 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
       errMsg = "Invalid blueprint path.";
     } else if (!validateResourcesPath()) {
       errMsg = "Invalid resources path.";
+    } else if (!validateServices()) {
+      errMsg = "No deployment services available. "
+          + "Please add at least one service in preferences.";
     } else if (!validateContainer()) {
       errMsg = "Missing container";
     }
@@ -345,6 +348,10 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
   private boolean validateResourcesPath() {
     File file = new File(resources);
     return file.isDirectory() && file.canRead();
+  }
+
+  private boolean validateServices() {
+    return services.getThreadSafe().size() > 0;
   }
 
   private boolean validateContainer() {
