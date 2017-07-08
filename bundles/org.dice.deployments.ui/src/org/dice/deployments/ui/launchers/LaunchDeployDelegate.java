@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dice.deployments.client.exception.ClientError;
 import org.dice.deployments.client.http.Result;
@@ -28,6 +31,11 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.RepositoryBuilder;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 
 public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
 
@@ -47,18 +55,21 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     Path archive = packageBlueprintData(blueprintPath, resourcesPath);
     sub.worked(20);
 
+    // TODO: Add check for project here
+    IProject project = Utils.getResourceFromPath(blueprintPath).getProject();
+    Map<String, String> metadata = gatherMetadata(project);
+
     // Force container update in order to operate on a fresh list.
     ContainerProvider.INSTANCE.update();
     Container container = ContainerProvider.INSTANCE.get(containerId);
     Service service = ServiceProvider.INSTANCE.get(serviceId);
-    Blueprint blueprint = deployBlueprint(service, container, archive);
+    Blueprint blueprint =
+        deployBlueprint(service, container, archive, metadata);
 
     // Force container update in order to operate on a fresh list.
     ContainerProvider.INSTANCE.update();
     container = ContainerProvider.INSTANCE.get(containerId);
 
-    // TODO: Add check for project here
-    IProject project = Utils.getResourceFromPath(blueprintPath).getProject();
     DeploymentProvider provider = DeploymentProvider.getProvider(project);
     provider.createDeloyment(blueprint);
     ContainerProvider.INSTANCE.update();
@@ -66,13 +77,59 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
     sub.worked(80);
   }
 
+  private static Map<String, String> gatherMetadata(IProject project) {
+    Map<String, String> meta = new HashMap<>();
+    meta.put("timestamp", Instant.now().toString());
+    meta.put("project-name", project.getName());
+
+    meta.putAll(addGitMetadata(project));
+    meta.putAll(addSvnMetadata(project));
+
+    return meta;
+  }
+
+  private static Map<String, String> addSvnMetadata(IProject project) {
+    // TODO: SVN metadata extraction is currently missing.
+    return new HashMap<>();
+  }
+
+  private static Map<String, String> addGitMetadata(IProject project) {
+    Map<String, String> data = new HashMap<>();
+
+    // TODO: Next piece of code check if jgit bundle is present if we ever
+    // decide to make metadata extraction optional. Note that besides this
+    // check, we need to code around
+    // OSGI loader in order not to get errors on instantiation of the plugin.
+    /*
+     * Bundle bundle = Platform.getBundle("org.eclipse.jgit"); if (bundle ==
+     * null) { return data; }
+     */
+
+    try {
+      Repository repository = new RepositoryBuilder()
+          .findGitDir(project.getLocation().toFile()).build();
+      try (RevWalk walk = new RevWalk(repository)) {
+        RevCommit commit =
+            walk.parseCommit(repository.resolve(Constants.HEAD));
+        data.put("git-commit-id", commit.getId().name());
+        data.put("git-commit-msg", commit.getFullMessage());
+      }
+    } catch (IOException e) {
+      // TODO: Log error to eclipse
+    } catch (NullPointerException e) {
+      // TODO: Log error to eclipse
+    }
+
+    return data;
+  }
+
   private Blueprint deployBlueprint(Service service, Container container,
-      Path archive) throws CoreException {
+      Path archive, Map<String, String> metadata) throws CoreException {
     String errorMsg = "Failed to upload blueprint";
 
     try {
       Result<Blueprint, Message> response =
-          service.deployBlueprint(container, archive.toFile());
+          service.deployBlueprint(container, archive.toFile(), metadata, true);
       if (!response.ok) {
         throw prepareCoreException(null, errorMsg, response.second.toString());
       }
@@ -134,7 +191,5 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
       throw prepareCoreException(e, "Failed to create blueprint archive.");
     }
   }
-
-
 
 }

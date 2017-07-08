@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -240,10 +241,10 @@ public class Service extends ModelObject {
     return client.undeployBlueprint(c.getId());
   }
 
-  public Result<Blueprint, Message> deployBlueprint(Container c, File archive)
-      throws ClientError {
+  public Result<Blueprint, Message> deployBlueprint(Container c, File archive,
+      Map<String, String> metadata, boolean register) throws ClientError {
     ensureClient();
-    return client.deployBlueprint(c.getId(), archive);
+    return client.deployBlueprint(c.getId(), archive, metadata, register);
   }
 
   @Override
