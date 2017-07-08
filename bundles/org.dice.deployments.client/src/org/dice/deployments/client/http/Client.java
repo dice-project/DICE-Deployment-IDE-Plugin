@@ -15,7 +15,6 @@ import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.RequestBuilder;
@@ -131,9 +130,15 @@ public class Client {
   }
 
   public Result<Blueprint, Message> deployBlueprint(String containerId,
-      File blueprint) throws ClientError {
+      File blueprint, Map<String, String> metadata, boolean register)
+      throws ClientError {
     String path = String.format("/containers/%s/blueprint", containerId);
-    Response response = post(path, null, blueprint);
+    Map<String, String> params = null;
+    if (register) {
+      params = new HashMap<>();
+      params.put("register_app", "true");
+    }
+    Response response = post(path, params, metadata, blueprint);
     return getResult(response, Blueprint.class, HttpStatus.SC_ACCEPTED);
   }
 
@@ -215,14 +220,19 @@ public class Client {
     return execute(builder);
   }
 
-  private Response post(String path, Map<String, String> params, File file)
-      throws ClientError {
+  private Response post(String path, Map<String, String> params,
+      Map<String, String> data, File file) throws ClientError {
     RequestBuilder builder =
         RequestBuilder.post().setUri(buildURI(path, params));
     addAuth(builder);
-    HttpEntity entity =
-        MultipartEntityBuilder.create().addBinaryBody("file", file).build();
-    builder.setEntity(entity);
+    MultipartEntityBuilder payload = MultipartEntityBuilder.create();
+    payload.addBinaryBody("file", file);
+    if (data != null) {
+      for (Map.Entry<String, String> entry : data.entrySet()) {
+        payload.addTextBody(entry.getKey(), entry.getValue());
+      }
+    }
+    builder.setEntity(payload.build());
     return execute(builder);
   }
 
