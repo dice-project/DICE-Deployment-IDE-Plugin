@@ -258,12 +258,8 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
       @Override
       public void selectionChanged(SelectionChangedEvent event) {
         IStructuredSelection sel = (IStructuredSelection) event.getSelection();
-        Service s = (Service) sel.getFirstElement();
-        if (service == null || service.getId() != s.getId()) {
-          service = s;
-          containerId = s.getContainer();
-          scheduleContainerUpdate();
-        }
+        service = (Service) sel.getFirstElement();
+        scheduleContainerUpdate();
       }
     });
     GridDataFactory.fillDefaults().grab(true, false)
@@ -292,6 +288,7 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
             IStructuredSelection sel =
                 (IStructuredSelection) event.getSelection();
             container = (Container) sel.getFirstElement();
+            containerId = container == null ? null : container.getId();
             scheduleValidation(200);
           }
         });
@@ -381,7 +378,9 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
   private void updateContainerList() {
     Set<Container> cs = new HashSet<>();
     try {
-      cs = service.listContainers();
+      if (service != null) {
+        cs = service.listContainers();
+      }
     } catch (ClientError e) {
       // TODO Log error to eclipse error console
     }
