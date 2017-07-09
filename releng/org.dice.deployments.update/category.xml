@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.dice.deployments.client.feature_0.3.0.qualifier.jar" id="org.dice.deployments.client.feature" version="0.3.0.qualifier">
+   <feature url="features/org.dice.deployments.client.feature_0.3.1.qualifier.jar" id="org.dice.deployments.client.feature" version="0.3.1.qualifier">
       <category name="org.dice.deployments"/>
    </feature>
-   <feature url="features/org.dice.deployments.datastore.feature_0.3.0.qualifier.jar" id="org.dice.deployments.datastore.feature" version="0.3.0.qualifier">
+   <feature url="features/org.dice.deployments.datastore.feature_0.3.1.qualifier.jar" id="org.dice.deployments.datastore.feature" version="0.3.1.qualifier">
       <category name="org.dice.deployments"/>
    </feature>
-   <feature url="features/org.dice.deployments.ui.feature_0.3.0.qualifier.jar" id="org.dice.deployments.ui.feature" version="0.3.0.qualifier">
+   <feature url="features/org.dice.deployments.ui.feature_0.3.1.qualifier.jar" id="org.dice.deployments.ui.feature" version="0.3.1.qualifier">
       <category name="org.dice.deployments"/>
    </feature>
    <feature url="features/org.dice.compat.feature_0.1.0.qualifier.jar" id="org.dice.compat.feature" version="0.1.0.qualifier">
