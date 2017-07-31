@@ -6,7 +6,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             name="DICE"
-            class="org.dice.compat.preferences.MockPreferencesPage"
+            class="org.dice.deployments.standalone.preferences.MockPreferencesPage"
             id="org.dice.ui.preferences">
       </page>
    </extension>
@@ -23,6 +23,16 @@
             name="DICE Tools"
             parentCategory="org.dice.methodology.category">
       </category>
+      <cheatsheet
+            category="org.dice.methodology.tools.category"
+            composite="true"
+            contentFile="cheatsheets/main.xml"
+            id="org.dice.deployments.standalone.cheatsheet"
+            name="Delivery Tool">
+         <description>
+            Learn how to use the DICE Delivery Tool
+         </description>
+      </cheatsheet>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

@@ -1,4 +1,4 @@
-package org.dice.compat.preferences;
+package org.dice.deployments.standalone.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;

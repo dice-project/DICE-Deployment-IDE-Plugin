@@ -17,7 +17,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>org.dice.compat.feature</module>
+    <module>org.dice.deployments.standalone.feature</module>
     <module>org.dice.deployments.client.feature</module>
     <module>org.dice.deployments.datastore.feature</module>
     <module>org.dice.deployments.ui.feature</module>

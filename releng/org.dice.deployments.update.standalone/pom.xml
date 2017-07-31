@@ -12,7 +12,7 @@
     <version>0.3.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.dice.deployments.update</artifactId>
+  <artifactId>org.dice.deployments.update.standalone</artifactId>
   <packaging>eclipse-repository</packaging>
 
 </project>
