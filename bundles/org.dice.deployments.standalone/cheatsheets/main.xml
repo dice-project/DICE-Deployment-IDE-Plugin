@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <compositeCheatsheet name="Delivery Tool">
-   <taskGroup kind="sequence" name="Delivery Tool" skip="false">
+   <taskGroup kind="set" name="Delivery Tool" skip="false">
       <intro>
          <b>Introduction</b>
       </intro>
