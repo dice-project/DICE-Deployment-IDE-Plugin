@@ -46,25 +46,24 @@ we will be automatically working on `gh-pages` branch. Note that this step
 only needs to be taken first time we setup the local repo folder. For all
 other updates, we will reuse existing work tree.
 
-To generate update site contents, run `mvn clean verify` in the root folder of
-the git repository. This will rebuild all of the plugins and features that
-will be then packaged in repository that can be copied to the update site.
+To generate update site contents and update version numbers, run
+`./prepare-release.sh` script. Example invocation that will create release
+0.3.1 would look like this:
 
-When the maven is done building the site, we need to copy generated files to
-the gh-pages branch. Exact commands that need to be run are (replace `VERSION`
-with version of the plugin we just built):
+    ./prepare-release.sh 0.3.1 gh-pages/updates
 
-    mkdir gh-pages/updates/VERSION
-    cp -rv releng/org.dice.deployments.update/target/repository/* \
-      gh-pages/updates/VERSION
-    ./update-p2-repo.sh gh-pages/updates
+All that we need to do now is to commit the changes to the main and gh-pages
+branch and update site is ready to be added to eclipse. Main address that
+should be used for this repo by users is
+`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates/VERSION`,
+which contains requested version of the plugin. This update site has orbit
+update site already included, so there is no manual user intervention needed
+when installing the plugin.
 
-All that we need to do now is to commit the changes to the gh-pages branch and
-update site is ready to be added to eclipse. Main address that should be used
-for this repo by users is
-`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates`, which
-contains all versions of the plugin. We can also append version number to the
-address if we wish to access only specific version of the plugin.
+DICE IDE developers should use bare bones update sites available at
+`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates/VERSION/ide`.
+This update site contains only features that are meant to be used when plugin
+is integrated into DICE IDE.
 
 
 ### Removing gh-pages folder
