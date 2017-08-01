@@ -48,7 +48,7 @@
          point="org.eclipse.ui.views">
       <category
             id="org.dice.deployments.ui"
-            name="Delivery Tool">
+            name="DICE Delivery Tool">
       </category>
       <view
             allowMultiple="false"
