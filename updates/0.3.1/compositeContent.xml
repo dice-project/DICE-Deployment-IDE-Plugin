@@ -5,11 +5,11 @@
     type="org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository"
     version="1.0.0">
   <properties size="1">
-    <property name="p2.timestamp" value="1501573852"/>
+    <property name="p2.timestamp" value="1501573218000"/>
   </properties>
-  <children size="2">
-    <child location="0.1.2"/>
-    <child location="0.3.0"/>
-    <child location="0.3.1"/>
+  <children size="3">
+    <child location="ide"/>
+    <child location="standalone"/>
+    <child location="http://download.eclipse.org/tools/orbit/R-builds/R20170307180635/repository"/>
   </children>
 </repository>
