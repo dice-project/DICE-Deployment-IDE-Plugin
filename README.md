@@ -50,18 +50,24 @@ To generate update site contents and update version numbers, run
 `./prepare-release.sh` script. Example invocation that will create release
 0.3.1 would look like this:
 
-    ./prepare-release.sh 0.3.1 gh-pages/updates
+    ./prepare-release.sh 0.3.1 gh-pages
+
+The script actually creates two update sites. The `gh-pages/updates_standalone`
+contains the plug-in update with everything needed to do an installation in
+a standalone Eclipse. The official update site is in the second folder,
+`gh-pages/updates`. This update site contains only the features that are from
+the plug-in, and thus assumes that the user installs it into the DICE Platform.
 
 All that we need to do now is to commit the changes to the main and gh-pages
 branch and update site is ready to be added to eclipse. Main address that
 should be used for this repo by users is
-`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates/VERSION`,
+`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates_standalone/VERSION`,
 which contains requested version of the plugin. This update site has orbit
 update site already included, so there is no manual user intervention needed
 when installing the plugin.
 
 DICE IDE developers should use bare bones update sites available at
-`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates/VERSION/ide`.
+`http://dice-project.github.io/DICE-Deployment-IDE-Plugin/updates/VERSION`.
 This update site contains only features that are meant to be used when plugin
 is integrated into DICE IDE.
 
