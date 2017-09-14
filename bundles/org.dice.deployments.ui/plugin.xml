@@ -46,13 +46,9 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="org.dice.deployments.ui"
-            name="DICE Delivery Tool">
-      </category>
       <view
             allowMultiple="false"
-            category="org.dice.deployments.ui"
+            category="org.dice.ui.views.category"
             class="org.dice.deployments.ui.views.ContainersView"
             icon="icons/deployments.png"
             id="org.dice.deployments.ui.views.Containers"

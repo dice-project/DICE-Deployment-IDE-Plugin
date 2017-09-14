@@ -45,5 +45,12 @@
          </menu>
       </menuContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.dice.ui.views.category"
+            name="DICE Views">
+      </category>
+   </extension>
 
 </plugin>
