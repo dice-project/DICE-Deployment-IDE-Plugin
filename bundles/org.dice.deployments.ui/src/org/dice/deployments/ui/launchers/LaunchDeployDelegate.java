@@ -105,9 +105,13 @@ public class LaunchDeployDelegate extends LaunchConfigurationDelegate {
      * null) { return data; }
      */
 
+    RepositoryBuilder builder = new RepositoryBuilder();
+    builder.findGitDir(project.getLocation().toFile());
+    if (builder.getGitDir() == null)
+      return data; // This is not a git repository.
+
     try {
-      Repository repository = new RepositoryBuilder()
-          .findGitDir(project.getLocation().toFile()).build();
+      Repository repository = builder.build();
       try (RevWalk walk = new RevWalk(repository)) {
         RevCommit commit =
             walk.parseCommit(repository.resolve(Constants.HEAD));
