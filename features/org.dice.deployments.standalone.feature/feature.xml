@@ -2,7 +2,7 @@
 <feature
       id="org.dice.deployments.standalone.feature"
       label="DICE Deployment Standalone Feature"
-      version="0.3.1.qualifier"
+      version="0.3.2.qualifier"
       provider-name="XLAB">
 
    <description url="https://github.com/dice-project/DICE-Deployment-IDE-Plugin">
@@ -106,9 +106,9 @@ This Agreement is governed by the laws of the State of New York and the intellec
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.cheatsheets"/>
-      <import feature="org.dice.deployments.client.feature" version="0.3.1.qualifier"/>
-      <import feature="org.dice.deployments.datastore.feature" version="0.3.1.qualifier"/>
-      <import feature="org.dice.deployments.ui.feature" version="0.3.1.qualifier"/>
+      <import feature="org.dice.deployments.client.feature" version="0.3.2.qualifier"/>
+      <import feature="org.dice.deployments.datastore.feature" version="0.3.2.qualifier"/>
+      <import feature="org.dice.deployments.ui.feature" version="0.3.2.qualifier"/>
    </requires>
 
    <plugin

@@ -9,7 +9,7 @@
   <parent>
     <groupId>org.dice.deployments</groupId>
     <artifactId>org.dice.deployments.releng</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.dice.deployments.update.ide</artifactId>

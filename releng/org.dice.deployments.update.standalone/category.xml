@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.dice.deployments.standalone.feature_0.3.1.qualifier.jar" id="org.dice.deployments.standalone.feature" version="0.3.1.qualifier">
+   <feature url="features/org.dice.deployments.standalone.feature_0.3.2.qualifier.jar" id="org.dice.deployments.standalone.feature" version="0.3.2.qualifier">
       <category name="org.dice.deployments"/>
    </feature>
    <category-def name="org.dice.deployments" label="DICE Deployment Service"/>
