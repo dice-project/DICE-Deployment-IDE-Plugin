@@ -210,7 +210,8 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
     });
     GridDataFactory.fillDefaults().grab(true, false).applyTo(blueprintText);
 
-    Utils.createPathSelector(parent, blueprintText, FileDialog.class);
+    String[] filter = new String[] {"*.yaml;*.yml;*.txt", "*.*"};
+    Utils.createPathSelector(parent, blueprintText, FileDialog.class, filter);
   }
 
   private void createResourceSelector(Composite parent) {

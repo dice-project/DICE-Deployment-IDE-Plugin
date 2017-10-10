@@ -77,6 +77,11 @@ public class Utils {
 
   public static <T> Button createPathSelector(Composite parent, Text target,
       Class<T> dialogClass) {
+    return createPathSelector(parent, target, dialogClass, null);
+  }
+
+  public static <T> Button createPathSelector(Composite parent, Text target,
+      Class<T> dialogClass, String[] filter) {
     /*
      * This method is not the most beautiful piece of code ever written, but it
      * should get the work done without duplicating the code in each "browse"
@@ -98,6 +103,8 @@ public class Utils {
           T dialog = con.newInstance(parent.getShell());
           Method m = dialogClass.getMethod("setFilterPath", String.class);
           m.invoke(dialog, path.toOSString());
+          m = dialogClass.getMethod("setFilterExtensions", String[].class);
+          m.invoke(dialog, (Object) filter);
           m = dialogClass.getMethod("open");
           String value = (String) m.invoke(dialog);
           if (value != null) {
