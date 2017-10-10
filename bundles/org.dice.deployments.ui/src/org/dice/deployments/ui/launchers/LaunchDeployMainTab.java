@@ -216,7 +216,7 @@ public class LaunchDeployMainTab implements ILaunchConfigurationTab {
 
   private void createResourceSelector(Composite parent) {
     Label label = new Label(parent, SWT.NONE);
-    label.setText("Resources folder:");
+    label.setText("Resource folder:");
 
     resourcesText = new Text(parent, SWT.NONE);
     resourcesText.addModifyListener(new ModifyListener() {
