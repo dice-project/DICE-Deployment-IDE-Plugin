@@ -83,3 +83,14 @@ instruct git to prune work trees. Command are
 This will remove folder and clear git's cache. Note that this does not remove
 gh-pages branch from git repository. This branch is still safely stored on
 disk and on remote.
+
+
+## License
+
+Copyright (c) 2017 XLAB d.o.o.
+
+This program and the accompanying materials are made available under the terms
+of the Eclipse Public License 2.0 which is available at
+https://www.eclipse.org/legal/epl-2.0/
+
+SPDX-License-Identifier: EPL-2.0
